@@ -8,15 +8,14 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
+
+import ru.agrage.project.Interface.UserInterface;
 import ru.agrage.project.Models.SignupModel;
 import ru.agrage.project.Models.UserModel;
 import ru.agrage.project.Service.UserService;
 import ru.agrage.project.Service.ValidatorService;
-
-/**
- * Created by Дмитрий on 04.10.2016.
- */
 
 @RestController
 public class RegistrationController {

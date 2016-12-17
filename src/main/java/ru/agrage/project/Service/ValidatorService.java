@@ -7,10 +7,6 @@ import org.springframework.validation.Validator;
 import ru.agrage.project.Models.SignModel;
 import ru.agrage.project.Models.SignupModel;
 
-/**
- * Created by Дмитрий on 06.10.2016.
- */
-
 public class ValidatorService implements Validator {
 
     private final UserService accountService;
