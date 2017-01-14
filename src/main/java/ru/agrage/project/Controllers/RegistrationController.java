@@ -1,6 +1,9 @@
 package ru.agrage.project.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -9,11 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import ru.agrage.project.Interface.UserInterface;
 import ru.agrage.project.Models.SignupModel;
 import ru.agrage.project.Models.UserModel;
+import ru.agrage.project.Service.Impl.UserServiceImpl;
 import ru.agrage.project.Service.UserService;
 import ru.agrage.project.Service.ValidatorService;
 
@@ -33,7 +38,7 @@ public class RegistrationController {
     }
 
     @RequestMapping(path = "/api/user/registration/", method = RequestMethod.POST)
-    public ResponseEntity<UserModel> registration(@Valid @RequestBody final SignupModel Object) {
-        return new ResponseEntity<UserModel> (accountService.addUser(Object), HttpStatus.OK);
+    public ResponseEntity<UserModel> registration(@Valid @RequestBody final SignupModel Object, HttpServletRequest request, HttpServletResponse response) {
+        return new ResponseEntity<UserModel> (accountService.create(Object), HttpStatus.OK);
     }
 }

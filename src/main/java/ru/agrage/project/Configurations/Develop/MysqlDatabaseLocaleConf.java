@@ -1,12 +1,8 @@
 package ru.agrage.project.Configurations.Develop;
 
-
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -24,6 +20,7 @@ import java.util.Properties;
 @Profile(SystemConstants.SPRING_PROFILE_DEVELOPMENT)
 public class MysqlDatabaseLocaleConf {
 
+    //  Объявляем источник данных с базой "agrage"
     @Bean
     public DataSource dataSource() throws SQLException {
         DriverManagerDataSource basicDataSource = new DriverManagerDataSource();
@@ -34,19 +31,25 @@ public class MysqlDatabaseLocaleConf {
         return basicDataSource;
     }
 
+    /*
+     *  Самая важная часть
+     */
     @Bean
     public LocalSessionFactoryBean sessionFactory() throws SQLException {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setDataSource(dataSource()); // Внедряем источник данных в фабрику сеансов
         sessionFactory.setPackagesToScan(new String[] { "ru.agrage.project.Models" });
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.format_sql", "true");
+        properties.put("hibernate.format_sql", "true"); // Выводов логов в консоль
         sessionFactory.setHibernateProperties(properties);
         return sessionFactory;
     }
 
+    /*
+     *  Диспетчер транзакций для транзакционноrо доступа к данным
+     */
     @Bean
     @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory s) {

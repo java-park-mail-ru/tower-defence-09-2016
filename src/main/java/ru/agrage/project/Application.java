@@ -3,16 +3,14 @@ package ru.agrage.project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import ru.agrage.project.Configurations.SystemConstants;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
@@ -21,8 +19,11 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 
 @EnableScheduling
+@ComponentScan
 @SpringBootApplication
+@EnableAutoConfiguration (exclude = HibernateJpaAutoConfiguration.class)
 public class Application {
+
 
     @Inject
     private Environment env;
@@ -44,16 +45,6 @@ public class Application {
         Environment env = app.run(args).getEnvironment();
         log.info(InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"));
-    }
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/user/**").allowedOrigins("https://towerdefensepvp.herokuapp.com");
-                registry.addMapping("/api/user/registration/").allowedOrigins("https://towerdefensepvp.herokuapp.com/registration");
-                registry.addMapping("/api/user/login/").allowedOrigins("https://towerdefensepvp.herokuapp.com/login");
-            }
-        };
     }
     private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active")) {
