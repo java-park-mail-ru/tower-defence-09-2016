@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/rating/").access("hasRole('user') or hasRole('admin')")
                 .antMatchers("/api/user/session/").access("hasRole('user') or hasRole('admin')");
         http.csrf().disable();
-        // Запросы только на /api/, другие игнорировать.
+
         http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/user/**"
